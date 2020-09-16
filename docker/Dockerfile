@@ -3,11 +3,11 @@ FROM ubuntu:bionic
 # Add SOLR_URL can be pass using -e in docker run to be specific
 # Example, run using command below
 # "docker run --name test-indexer -e SOLR_URL='http://123abc.test/solr' imageName" 
-ENV PATH="/opt/indexer-data:/opt/docker-scripts:$PATH" \
+ENV PATH="/opt/indexer-data:/opt/docker:$PATH" \
     SOLR_URL="http://testbed_solr:8983/solr" \
     ZNAME="testbed-indexer-0.0.1-SNAPSHOT" \
     ZFORMAT="tar" \
-    SPATH="/opt/docker-scripts" \
+    SPATH="/opt/docker" \
     INDEXER_USER="indexer" \
     INDEXER_UID="8080" \
     INDEXER_GROUP="indexer" \
@@ -24,8 +24,8 @@ RUN set -x; \
  
 RUN mkdir -p /opt/indexer-data; \
     chown -R indexer:indexer "/opt/indexer-data"; \
-    mkdir -p /opt/docker-scripts; \
-    chown -R indexer:indexer "/opt/docker-scripts"; \
+    mkdir -p /opt/docker; \
+    chown -R indexer:indexer "/opt/docker"; \
     mkdir -p /home/indexer; \
     chown -R indexer:indexer "/home/indexer"; \
     usermod -aG root indexer; \
@@ -42,21 +42,20 @@ RUN rm -R /tmp/certs
 
 # Making sure that the user indexer can access these files
 # COPY and extract at the same time the tar file.
-ADD --chown=indexer:indexer /target/$ZNAME.$ZFORMAT /opt/docker-scripts/
-COPY --chown=indexer:indexer src/test/data/ /opt/indexer-data
-COPY --chown=indexer:indexer docker-scripts/ /opt/docker-scripts
+ADD --chown=indexer:indexer /target/$ZNAME.$ZFORMAT /opt/docker/
+COPY --chown=indexer:indexer docker/ /opt/docker
 
 
 
 # Validate files transfer in docker build and unix format the sh file
-RUN chmod +x /opt/docker-scripts/*; \
+RUN chmod +x /opt/docker/*; \
     ls -all; \
     ls /opt -Rtall; \
     echo $PATH; \
-    chown -R indexer:indexer "/opt/docker-scripts"; \
-    sed -i -e 's/\r$//' /opt/docker-scripts/docker-entrypoint; \
-    sed -i -e 's/\r$//' /opt/docker-scripts/indexer-run; \
-    cat /opt/docker-scripts/docker-entrypoint
+    chown -R indexer:indexer "/opt/docker"; \
+    sed -i -e 's/\r$//' /opt/docker/docker-entrypoint; \
+    sed -i -e 's/\r$//' /opt/docker/indexer-run; \
+    cat /opt/docker/docker-entrypoint
 
 COPY --chown=indexer:indexer configs/ /opt/indexer-configs/
 
