@@ -35,7 +35,7 @@ jobs:
     - uses: Azure/k8s-deploy@v1
       with:
         manifests: |
-          kubernetes/testbed-indexer-cronjob.yaml
+          kubernetes/testbed-indexer-cronjob.yml
         images: |
           dtobtn/testbed-indexer:${{ github.sha }}
         namespace: |
