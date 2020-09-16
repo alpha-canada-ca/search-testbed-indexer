@@ -35,7 +35,7 @@
 
     <!-- Test dependencies -->
     <junit.version>5.5.1</junit.version>
-    <log4j.version>2.11.2</log4j.version>
+    <log4j.version>2.13.2</log4j.version>
   </properties>
 
   <inceptionYear>2019</inceptionYear>
