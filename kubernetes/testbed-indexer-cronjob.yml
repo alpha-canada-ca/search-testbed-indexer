@@ -10,13 +10,13 @@ spec:
         spec:
           containers:
           - name: testbed-indexer
-            image: ryanhyma/testbed_indexer:1.0.0
+            image: dtobtn/testbed-indexer:latest
             imagePullPolicy: Always
             resources: 
               limits:
                 cpu: 500m
                 memory: 512Mi
               requests:
-                cpu: 500m
-                memory: 512Mi
+                cpu: 250m
+                memory: 256Mi
           restartPolicy: OnFailure
